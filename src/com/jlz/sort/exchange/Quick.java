@@ -23,7 +23,6 @@ public class Quick {
      */
     public static void quick(int[] arr, int start, int end) {
         if (start < end) {
-
             int stand = arr[start];
             //坐标
             int low = start;
