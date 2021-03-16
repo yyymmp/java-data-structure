@@ -11,11 +11,29 @@ public class TestTree {
     public static void main(String[] args) {
         BinaryTree treeNode = new BinaryTree();
         TreeNode root = new TreeNode(1);
-        TreeNode left = new TreeNode(1);
-        TreeNode right = new TreeNode(1);
+        TreeNode left = new TreeNode(2);
+        TreeNode right = new TreeNode(3);
         treeNode.setRoot(root);
         root.setLeftNode(left);
         root.setRightNode(right);
+        //为第二层节点创建子节点
+        TreeNode left2 = new TreeNode(4);
+        TreeNode right2 = new TreeNode(5);
+        left.setLeftNode(left2);
+        left.setRightNode(right2);
+
+        TreeNode left5 = new TreeNode(6);
+        TreeNode right6 = new TreeNode(7);
+        right.setLeftNode(left5);
+        right.setRightNode(right6);
+
+        treeNode.fontShow();
+
+        treeNode.deleteChildrenTree(2);
+        System.out.println("++++++++++++++++++++++++++++");
+        treeNode.fontShow();
+//        System.out.println(treeNode.findFrondSearch(3).getValue());
     }
+
 
 }

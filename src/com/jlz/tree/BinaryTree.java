@@ -18,4 +18,28 @@ public class BinaryTree {
     public TreeNode getRoot() {
         return root;
     }
+
+    //前序遍历 根左右
+    public void fontShow() {
+        root.frontShow();
+    }
+
+    //中序遍历 左根右
+    public void midShow() {
+        root.midShow();
+    }
+
+    //前序查找
+    public TreeNode findFrondSearch(int i) {
+        return root.findFrondSearch(i);
+    }
+
+    //删除子树
+    public void deleteChildrenTree(int i) {
+        if (root.getValue() == i) {
+            root = null;
+        } else {
+            root.deleteChildrenTree(i);
+        }
+    }
 }
