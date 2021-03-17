@@ -33,6 +33,11 @@ public class TestTree {
         System.out.println("++++++++++++++++++++++++++++");
         treeNode.fontShow();
 //        System.out.println(treeNode.findFrondSearch(3).getValue());
+        //数组顺序存储树结构
+        System.out.println("+++++++++++++++++");
+        int[] ints = {1, 2, 3, 4, 5, 6, 7};
+        ArrayTree arrayTree = new ArrayTree(ints);
+        arrayTree.fontShow2();
     }
 
 
