@@ -38,7 +38,37 @@ public class TestTree {
         int[] ints = {1, 2, 3, 4, 5, 6, 7};
         ArrayTree arrayTree = new ArrayTree(ints);
         arrayTree.fontShow2();
+        System.out.println("+++++++++++++++++");
+//        addBinary("11", "1");
+        System.out.println(mySqrt(4));
+
     }
 
+
+    public static String addBinary(String a, String b) {
+
+        String s = Integer.valueOf(a, 2).toString();
+        String s2 = Integer.valueOf(b, 2).toString();
+        int i = Integer.parseInt(s) + Integer.parseInt(s2);
+        return Integer.toBinaryString(i);
+
+    }
+
+    public static int mySqrt(int x) {
+        int l = 0;
+        int r = x;
+        int ans = -1;
+        while (l < r) {
+            int mid = (l + r - 1) / 2;
+             if (mid * mid <= x) {
+                ans = mid;
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+        return ans;
+
+    }
 
 }
