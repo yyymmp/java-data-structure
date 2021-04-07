@@ -12,6 +12,7 @@ public class T_98 {
         return isValidBST(root, null, null);
     }
 
+    //需要将当前节点作为限制传入
     boolean isValidBST(TreeNode root, TreeNode min, TreeNode max) {
         if (root == null) {
             return true;
@@ -22,6 +23,8 @@ public class T_98 {
         if (min != null && root.val <= min.val) {
             return false;
         }
+        //左子树不可以大于当前节点值
+        //右子树不可以则必须大于当前值
         return isValidBST(root.left, min, root) && isValidBST(root.right, root, max);
     }
 

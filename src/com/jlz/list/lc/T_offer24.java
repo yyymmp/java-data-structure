@@ -9,7 +9,7 @@ package com.jlz.list.lc;
 public class T_offer24 {
 
     public ListNode reverseList(ListNode head) {
-        //双指针法
+        //双指针迭代
         ListNode pre = null;
         ListNode cur = head;
         while (cur != null) {
