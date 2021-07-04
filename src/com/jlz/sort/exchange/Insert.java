@@ -14,8 +14,11 @@ public class Insert {
         int[] arr = new int[]{
                 5, 4, 6, 1, 8, 9, 2
         };
-        insertSort2(arr);
+//        insertSort2(arr);
+//        System.out.println(Arrays.toString(arr));
+        sort(arr);
         System.out.println(Arrays.toString(arr));
+
     }
 
     public static void insertSort(int[] arr) {
@@ -46,6 +49,20 @@ public class Insert {
                     int tmp = arr[j - 1];
                     arr[j - 1] = arr[j];
                     arr[j] = tmp;
+                }
+            }
+        }
+    }
+
+    public static void sort(int[] arr) {
+        for (int i = 1; i < arr.length; i++) {
+            //内存循环 只排一边
+            for (int j = 0; j < i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    //则交换
+                    int tmp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = tmp;
                 }
             }
         }
