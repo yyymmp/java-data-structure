@@ -1,3 +1,4 @@
+package com.jlz.backtrack;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -6,7 +7,7 @@ public class T_77 {
 
     public static void main(String[] args) {
 
-        System.out.println((new Test()).combine(4, 2));
+
 //    System.out.println(new BCryptPasswordEncoder().encode("a1234567"));
 //    System.out.println(Test.class.getResource("/").getPath() + "/enterprise-apply.docx");
     }
