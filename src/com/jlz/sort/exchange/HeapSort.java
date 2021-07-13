@@ -48,6 +48,7 @@ public class HeapSort {
      * @param tree
      * @param n    总节点个数
      * @param i    对哪个节点进行heapify操作 即调整为正确的堆 heapify的过程是从上往下走的
+     *             现在是拿一个数组表示树的, i代表数组的元素索引
      */
     public static void heapify(int[] tree, int n, int i) {
         if (i >= n) {
