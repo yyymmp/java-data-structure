@@ -3,7 +3,7 @@ package com.jlz.dp;
 /**
  * @author clearlove
  * @ClassName T_5.java
- * @Description
+ * @Description  最长回文串
  * @createTime 2021年07月18日 23:49:00
  */
 public class T_5 {
