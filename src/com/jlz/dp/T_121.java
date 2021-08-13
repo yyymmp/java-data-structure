@@ -6,11 +6,15 @@ import static java.lang.Math.max;
  * @author jlz
  * @className: T_121
  * @date 2021/8/5 17:40
- * @description todo
+ * @description 股票问题合集:
+ * dp1: 121     买卖股票的最佳时机 一次
+ * dp2: 122     买卖股票的最佳时机 无限次
+ * dp3: 123     买卖股票的最佳时机 最多2次
+ * dp4: 188     买卖股票的最佳时机 最多k次
  **/
 public class T_121 {
+    //121原题
     //动态规划 前i天的最大收益 = max{前i-1天的最大收益，第i天的价格-前i-1天中的最小价格}
-
     //暴力  运行超时
     public static int maxProfit(int[] prices) {
         int n = prices.length;
@@ -26,6 +30,8 @@ public class T_121 {
         return max;
     }
 
+
+    /************************************股票问题合集************************************/
     /**
      * //设f[i][k][j] 是第i天的利润
      * //i :天数
@@ -72,7 +78,7 @@ public class T_121 {
         //边界条件
         //第一天 无操作 没有利润
         fd[0][0] = 0;
-        //第一天 卖出 则-prices[0]
+        //第一天 买入 则-prices[0]
         fd[0][1] = -prices[0];
         for (int i = 1; i < n; i++) {
             fd[i][0] = max(fd[i - 1][0], fd[i - 1][1] + prices[i]);
@@ -88,7 +94,9 @@ public class T_121 {
      * @return
      */
     public static int dp2(int[] prices) {
-
+        if (prices.length == 0) {
+            return 0;
+        }
         //dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
         //dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
 
@@ -118,42 +126,128 @@ public class T_121 {
      * @param prices
      * @return
      */
-    public static int dp3(int[] prices, int k) {
+    public static int dp3(int[] prices) {
+        int k = 2;//  需要穷举k的情况
         //dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
         //dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
-        // k = 2  需要穷举k的情况
-        //dp[i][2][0] = max(dp[i-1][2][0], dp[i-1][2][1] + prices[i])
-        //dp[i][2][1] = max(dp[i-1][2][1], dp[i-1][1][0] - prices[i])
-        int n = prices.length;
-        int[][][] fd = new int[n + 1][k + 1][2];
 
-        for (int ki = 0; ki <= k + 1; ki++) {
+        int n = prices.length;
+        int[][][] fd = new int[n][k + 1][2];
+
+        //边界情况
+        for (int ki = 0; ki <= k; ki++) {
             //第一天 未持股 买入 卖出 为零
             fd[0][ki][0] = 0;
             //第一天持股  买入 卖出 不可能
-            fd[0][ki][1] = Integer.MIN_VALUE;
+            fd[0][ki][1] = -prices[0];
         }
 
-
-        //边界条件
-        //第一天 无操作 没有利润
-        fd[0][0][0] = 0;
-        //第一天 卖出 则-prices[0]
-        fd[0][0][1] = -prices[0];
         for (int i = 1; i < n; i++) {
-            fd[i][2][0] = max(fd[i - 1][2][0], fd[i - 1][2][1] + prices[i]);
-            fd[i][2][1] = max(fd[i - 1][2][1], fd[i - 1][1][0] - prices[i]);
+            for (int kj = k; kj >= 1; kj--) {
+                fd[i][kj][0] = Math.max(fd[i - 1][kj][0], fd[i - 1][kj][1] + prices[i]);
+                fd[i][kj][1] = Math.max(fd[i - 1][kj][1], fd[i - 1][kj - 1][0] - prices[i]);
+            }
         }
         return Math.max(fd[n - 1][k][0], 0);
     }
 
+    /**
+     * 最多完成交易k次   0<k< n/2
+     * 当k>n/2 时 此时的k的含义等于正无穷  即解法2 dp2
+     *
+     * @param prices
+     * @return
+     */
+    public static int dp4(int k, int[] prices) {
+        int n = prices.length;
+        if (k > n / 2) {
+            return dp2(prices);
+        }
+
+        int[][][] fd = new int[n][k + 1][2];
+        //边界情况
+        for (int ki = 0; ki <= k; ki++) {
+            //第一天 未持股 买入 卖出 为零
+            fd[0][ki][0] = 0;
+            //第一天持股  买入 卖出 不可能
+            fd[0][ki][1] = -prices[0];
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int kj = k; kj >= 1; kj--) {
+                fd[i][kj][0] = Math.max(fd[i - 1][kj][0], fd[i - 1][kj][1] + prices[i]);
+                fd[i][kj][1] = Math.max(fd[i - 1][kj][1], fd[i - 1][kj - 1][0] - prices[i]);
+            }
+        }
+        return Math.max(fd[n - 1][k][0], 0);
+    }
+
+    //冷冻期 一天
+    public static int dp5(int[] prices) {
+        //dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+        //dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+        //冷冻期  第 i 天选择 buy 的时候，要从 i-2 的状态转移，而不是 i-1 。
+        //dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+        //dp[i][1] = max(dp[i-1][1], dp[i-2][0] - prices[i])
+        if (prices.length <= 1) {
+            return 0;
+        }
+        int n = prices.length;
+        int[][] fd = new int[n][2];
+        //边界条件
+        //第一天 无操作 没有利润
+        fd[0][0] = 0;
+        //第一天 卖出 则-prices[0]
+        fd[0][1] = -prices[0];
+
+//        //第二天不持股的情况
+//        fd[1][0] = Math.max(fd[0][0], fd[0][1] + prices[0]);
+//        //第二天持股的情况
+//        fd[i][1] = max(fd[i - 1][1], fd[i - 2][0] - prices[i]);
+        for (int i = 1; i < n; i++) {
+            fd[i][0] = max(fd[i - 1][0], fd[i - 1][1] + prices[i]);
+            //这里i-2数组移除 判断临界问题
+            if (i == 1) {
+                //如果是第二天 且持股  则: 1 跟随第一天持股 2第一天未买入 第二天买入
+                fd[1][1] = Math.max(fd[0][1], -prices[1]);
+            } else {
+                fd[i][1] = max(fd[i - 1][1], fd[i - 2][0] - prices[i]);
+            }
+        }
+        return Math.max(fd[n - 1][0], 0);
+    }
+
+    //卖出时含手续费
+    public static int dp6(int[] prices, int fee) {
+        //卖出时减去手续费 其余不变
+        //dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i]-fee)
+        //dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
+        if (prices.length == 0) {
+            return 0;
+        }
+        int n = prices.length;
+        int[][] fd = new int[n][2];
+        //边界条件
+        //第一天 无操作 没有利润
+        fd[0][0] = 0;
+        //第一天 卖出 则-prices[0]
+        fd[0][1] = -prices[0];
+        for (int i = 1; i < n; i++) {
+            fd[i][0] = max(fd[i - 1][0], fd[i - 1][1] + prices[i] - fee);
+            fd[i][1] = max(fd[i - 1][1], fd[i - 1][0] - prices[i]);
+        }
+        return Math.max(fd[n - 1][0], 0);
+
+    }
 
     public static void main(String[] args) {
         int[] arr = new int[]{
-                1, 2
+                1, 2, 3, 0, 2
+//                2, 1, 4
+//                3, 3, 5, 0, 0, 3, 1, 4
         };
 
-        System.out.println(dp1(arr));
+        System.out.println(dp5(arr));
     }
 
     public static int maxProfit2(int[] prices) {
