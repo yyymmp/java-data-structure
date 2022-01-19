@@ -1,4 +1,4 @@
-package com.jlz.list.lc;
+package com.jlz.array.lc;
 
 
 /**

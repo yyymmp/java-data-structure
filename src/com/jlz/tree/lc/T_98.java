@@ -1,5 +1,13 @@
 package com.jlz.tree.lc;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 /**
  * @author clearlove
  * @ClassName T_98.java
@@ -29,6 +37,26 @@ public class T_98 {
     }
 
     public static void main(String[] args) {
+        String name = "123.jpg";
+        String noSuc = name.substring(0, name.indexOf("."));
+        System.out.println(noSuc);
+    }
 
+
+    public static void copyFile(String filePathA, String filePathB) throws IOException {
+        File file = new File(filePathA);
+        File[] tempList = file.listFiles();
+        if (!Objects.isNull(tempList)) {
+            for (File tmpFile : tempList) {
+                if (tmpFile.isFile()) {
+                    String name = tmpFile.getName();
+                    String noSuc = name.substring(0, name.indexOf("."));
+                    LocalDateTime parse = LocalDateTime.parse(noSuc);
+                    String newPath = filePathB + "/" + parse.getYear() + "/" + parse.getMonth() + "/" + parse.getDayOfMonth() + "/" + name;
+                    Path desPath = Paths.get(newPath);
+                    Files.copy(tmpFile.toPath(), desPath);
+                }
+            }
+        }
     }
 }
